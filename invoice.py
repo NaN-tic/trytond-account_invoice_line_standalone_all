@@ -19,8 +19,8 @@ class Line(metaclass=PoolMeta):
             vlist = vlist[:]
             for values in vlist:
                 if 'invoice' in values:
-                    if not 'invoice_type' in values:
+                    if not values.get('invoice_type'):
                         values['invoice_type'] = cache[values['invoice']][0]
-                    if not 'party' in values:
+                    if not values.get('party'):
                         values['party'] = cache[values['invoice']][1]
         return super().create(vlist)
