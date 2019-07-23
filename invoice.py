@@ -10,15 +10,15 @@ class Line(metaclass=PoolMeta):
     def create(cls, vlist):
         Invoice = Pool().get('account.invoice')
 
-        invoices = Invoice.browse([x['invoice'] for x in vlist if 'invoice' in
-                x])
-        # Store invoice type/party because accessing objects randomly could be
-        # very inefficient due to cache invalidation
-        cache = dict([(x.id, (x.type, x.party.id)) for x in invoices])
-        if cache:
+        invoices = Invoice.browse([x['invoice'] for x in vlist if
+                x.get('invoice')])
+        if invoices:
+            # Store invoice type/party because accessing objects randomly could
+            # be very inefficient due to cache invalidation
+            cache = dict([(x.id, (x.type, x.party.id)) for x in invoices])
             vlist = vlist[:]
             for values in vlist:
-                if 'invoice' in values:
+                if values.get('invoice'):
                     if not values.get('invoice_type'):
                         values['invoice_type'] = cache[values['invoice']][0]
                     if not values.get('party'):
