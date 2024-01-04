@@ -10,6 +10,7 @@ class Line(metaclass=PoolMeta):
     def create(cls, vlist):
         Invoice = Pool().get('account.invoice')
 
+        vlist = [x.copy() for x in vlist]
         invoices = Invoice.browse([x['invoice'] for x in vlist if
                 x.get('invoice')])
         if invoices:
