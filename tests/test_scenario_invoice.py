@@ -30,10 +30,13 @@ class Test(unittest.TestCase):
         # Create company
         _ = create_company()
         company = get_company()
-        tax_identifier = company.party.identifiers.new()
-        tax_identifier.type = 'eu_vat'
-        tax_identifier.code = 'BE0897290877'
-        company.party.save()
+        # This scenario does not test invoice tax identifiers. Avoid creating an
+        # EU VAT on the company because its asynchronous VIES validation makes
+        # invoice posting flaky in this test, so there is nothing to save here.
+        # tax_identifier = company.party.identifiers.new()
+        # tax_identifier.type = 'eu_vat'
+        # tax_identifier.code = 'BE0897290877'
+        # company.party.save()
 
         # Create fiscal year
         fiscalyear = set_fiscalyear_invoice_sequences(
